@@ -1,0 +1,60 @@
+version: '2'
+services:
+  configuration:
+    image: configuration-image
+    container_name: configuration-container
+    ports:
+     - "127.0.0.1:8888:8888"
+    environment:
+      EUREKA_HOST: discovery
+      EUREKA_PORT: 8761
+      SPRING_PROFILES_ACTIVE: docker
+
+  discovery:
+    image: discovery-image
+    container_name: discovery-container
+    ports:
+     - "127.0.0.1:8761:8761"
+    depends_on:
+     - configuration
+    environment:
+      EUREKA_HOST: discovery
+      EUREKA_PORT: 8761
+      SPRING_PROFILES_ACTIVE: docker
+
+  gateway:
+    image: gateway-image
+    container_name: gateway-container
+    ports:
+     - "127.0.0.1:8080:8080"
+    depends_on:
+     - configuration
+     - discovery
+    environment:
+      EUREKA_HOST: discovery
+      EUREKA_PORT: 8761
+      SPRING_PROFILES_ACTIVE: docker
+
+  authentication:
+    image: authentication-image
+    container_name: authentication-container
+    ports:
+    - "127.0.0.1:8081:8080"
+    environment:
+      EUREKA_HOST: discovery
+      EUREKA_PORT: 8761
+      SPRING_PROFILES_ACTIVE: docker
+
+  monitor:
+    image: monitor-image
+    container_name: monitor-container
+    ports:
+    - "127.0.0.1:8989:8989"
+    links:
+    - discovery
+    - configuration
+    - authentication
+    environment:
+      EUREKA_HOST: discovery
+      EUREKA_PORT: 8761
+      SPRING_PROFILES_ACTIVE: docker

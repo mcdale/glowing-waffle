@@ -19,4 +19,18 @@
 			<artifactId>spring-cloud-starter-zuul</artifactId>
 		</dependency>
 	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<skipDockerBuild>false</skipDockerBuild>
+					<exposes>
+						<expose>8080</expose>
+					</exposes>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 </project>

@@ -41,10 +41,52 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	<build>
+	 <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>com.spotify</groupId>
+                    <artifactId>docker-maven-plugin</artifactId>
+                    <version>0.4.13</version>
+                    <configuration>
+                        <skipDockerBuild>true</skipDockerBuild>
+                    </configuration>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+		<plugins>
+			<plugin>
+				<groupId>com.spotify</groupId>
+				<artifactId>docker-maven-plugin</artifactId>
+				<configuration>
+					<imageName>${project.artifactId}-image</imageName>
+					<baseImage>openjdk:8-jdk-alpine</baseImage>
+					<maintainer>Marc Alexander (malexander@project-resources.co.uk)</maintainer>
+					<resources>
+						<resource>
+							<directory>${project.build.directory}</directory>
+							<include>${project.build.finalName}.jar</include>
+						</resource>
+					</resources>
+					<runs>
+						<run>touch /${project.build.finalName}.jar</run>
+					</runs>
+					<squashRunCommands>true</squashRunCommands>
+					<volumes>
+						<volume>/tmp</volume>
+					</volumes>
+					<entryPoint>
+						["java","-Djava.security.egd=file:/dev/./urandom","-jar","/${project.build.finalName}.jar"]						
+					</entryPoint>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
 	<modules>
 		<module>authentication</module>
 		<module>configuration</module>
 		<module>discovery</module>
 		<module>gateway</module>
+		<module>monitor</module>
 	</modules>
 </project>

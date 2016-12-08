@@ -5,10 +5,9 @@
 		<groupId>io.pmbox</groupId>
 		<artifactId>infrastructure</artifactId>
 		<version>0.0.1-SNAPSHOT</version>
-		<relativePath>..</relativePath>
 	</parent>
-	<artifactId>authentication</artifactId>
-	<name>Authentication Service</name>
+	<artifactId>monitor</artifactId>
+	<name>Monitor Service</name>
 	<build>
 		<plugins>
 			<plugin>
@@ -17,10 +16,24 @@
 				<configuration>
 					<skipDockerBuild>false</skipDockerBuild>
 					<exposes>
-						<expose>389</expose>
+						<expose>8989</expose>
 					</exposes>
 				</configuration>
 			</plugin>
 		</plugins>
 	</build>
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-hystrix-dashboard</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-turbine</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter</artifactId>
+		</dependency>
+	</dependencies>
 </project>
